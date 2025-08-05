@@ -1,5 +1,7 @@
 # Google Calendar MCP
 
+A Model Context Protocol (MCP) server that provides Google Calendar integration for AI assistants like Claude.
+
 
 ```json
 
