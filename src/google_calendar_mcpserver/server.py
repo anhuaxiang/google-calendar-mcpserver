@@ -41,16 +41,18 @@ async def list_events(
         time_min: Annotated[
             Optional[str], Field(
                 description=(
-                        "Start time boundary. Preferred: '2024-01-01T00:00:00' (uses timeZone parameter or calendar timezone). "
-                        "Also accepts: '2024-01-01T00:00:00Z' or '2024-01-01T00:00:00-08:00'."
+                        "Lower bound (exclusive) for an event's end time to filter by. Optional. The default is not to filter by end time."
+                        " Must be an RFC3339 timestamp with mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z."
+                        " Milliseconds may be provided but are ignored. If timeMax is set, timeMin must be smaller than timeMax."
                 )
             )
         ] = None,
         time_max: Annotated[
             Optional[str], Field(
                 description=(
-                        "End time boundary. Preferred: '2024-01-01T23:59:59' (uses timeZone parameter or calendar timezone). "
-                        "Also accepts: '2024-01-01T23:59:59Z' or '2024-01-01T23:59:59-08:00'."
+                        "Upper bound (exclusive) for an event's start time to filter by. Optional. The default is not to filter by start time."
+                        " Must be an RFC3339 timestamp with mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z."
+                        " Milliseconds may be provided but are ignored. If timeMin is set, timeMax must be greater than timeMin."
                 )
             )
         ] = None,
@@ -86,16 +88,18 @@ async def search_events(
         time_min: Annotated[
             Optional[str], Field(
                 description=(
-                        "Start time boundary. Preferred: '2024-01-01T00:00:00' (uses timeZone parameter or calendar timezone). "
-                        "Also accepts: '2024-01-01T00:00:00Z' or '2024-01-01T00:00:00-08:00'."
+                        "Lower bound (exclusive) for an event's end time to filter by. Optional. The default is not to filter by end time."
+                        " Must be an RFC3339 timestamp with mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z."
+                        " Milliseconds may be provided but are ignored. If timeMax is set, timeMin must be smaller than timeMax."
                 )
             )
         ] = None,
         time_max: Annotated[
             Optional[str], Field(
                 description=(
-                        "End time boundary. Preferred: '2024-01-01T23:59:59' (uses timeZone parameter or calendar timezone). "
-                        "Also accepts: '2024-01-01T23:59:59Z' or '2024-01-01T23:59:59-08:00'."
+                        "Upper bound (exclusive) for an event's start time to filter by. Optional. The default is not to filter by start time."
+                        " Must be an RFC3339 timestamp with mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00, 2011-06-03T10:00:00Z."
+                        " Milliseconds may be provided but are ignored. If timeMin is set, timeMax must be greater than timeMin."
                 )
             )
         ] = None,
@@ -132,10 +136,10 @@ async def create_event(
             Optional[str], Field(description="Description/notes for the event")
         ] = None,
         start: Annotated[
-            str, Field(description="Event start time: '2024-01-01T10:00:00'")
+            str, Field(description="The event start time, as a combined date-time value (formatted according to RFC3339). A time zone offset is required unless a time zone is explicitly specified in timeZone.")
         ] = "",
         end: Annotated[
-            str, Field(description="Event end time: '2024-01-01T11:00:00'")
+            str, Field(description="The event end time, as a combined date-time value (formatted according to RFC3339). A time zone offset is required unless a time zone is explicitly specified in timeZone.")
         ] = "",
         time_zone: Annotated[
             Optional[str], Field(
@@ -189,10 +193,10 @@ async def update_event(
             Optional[str], Field(description="Updated description/notes")
         ] = None,
         start: Annotated[
-            Optional[str], Field(description="Updated start time: '2024-01-01T10:00:00'")
+            str, Field(description="The event start time, as a combined date-time value (formatted according to RFC3339). A time zone offset is required unless a time zone is explicitly specified in timeZone.")
         ] = None,
         end: Annotated[
-            Optional[str], Field(description="Updated end time: '2024-01-01T11:00:00'")
+            str, Field(description="The event end time, as a combined date-time value (formatted according to RFC3339). A time zone offset is required unless a time zone is explicitly specified in timeZone.")
         ] = None,
         time_zone: Annotated[
             Optional[str], Field(
@@ -268,11 +272,11 @@ async def get_freebusy(
         ] = [],
         time_min: Annotated[
             str, Field(
-                description="Start time boundary. Preferred: '2024-01-01T00:00:00' (uses timeZone parameter or calendar timezone). Also accepts: '2024-01-01T00:00:00Z' or '2024-01-01T00:00:00-08:00'.")
+                description="Start time boundary.A time zone offset is required unless a time zone is explicitly specified in timeZone. Preferred: '2024-01-01T00:00:00' (uses timeZone parameter or calendar timezone). Also accepts: '2024-01-01T00:00:00Z' or '2024-01-01T00:00:00-08:00'.")
         ] = "",
         time_max: Annotated[
             str, Field(
-                description="End time boundary. Preferred: '2024-01-01T23:59:59' (uses timeZone parameter or calendar timezone). Also accepts: '2024-01-01T23:59:59Z' or '2024-01-01T23:59:59-08:00'.")
+                description="End time boundary. A time zone offset is required unless a time zone is explicitly specified in timeZone. Preferred: '2024-01-01T23:59:59' (uses timeZone parameter or calendar timezone). Also accepts: '2024-01-01T23:59:59Z' or '2024-01-01T23:59:59-08:00'.")
         ] = "",
         time_zone: Annotated[
             Optional[str], Field(description="Timezone for the query")
